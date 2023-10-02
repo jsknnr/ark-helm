@@ -25,8 +25,8 @@ env:
   enableCrossplay: true
   disableBattleye: false
   arkServerVolume: /app
-  gameClientPort: 7777
-  udpSocketPort: 7778
+  gameClient: 7777
+  udpSocket: 7778
   rconPort: 27020
-  serverListPort: 27015
+  serverList: 27015
   gameModIds: ""
