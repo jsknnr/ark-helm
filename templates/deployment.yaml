@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: "{{ .Chart.Name }}-server"
+    labels:
+        app: "{{ .Chart.Name }}"
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+        heritage: "{{ .Release.Service }}"
+spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+        matchLabels:
+            app: "{{ .Chart.Name }}"
+            release: "{{ .Release.Name }}"
+    template:
+        metadata:
+          labels:
+            app: "{{ .Chart.Name }}"
+            release: "{{ .Release.Name }}"
+        spec:
+            containers:
+            - name: "{{ .Chart.Name }}"
+              image: "{{ .Values.image }}:{{ .Values.imageTag}}"
+              imagePullPolicy: Always
+              resources:
+                requests:
+                    memory: "{{ .Values.resources.requests.memory }}"
+                    cpu: "{{ .Values.resources.requests.cpu }}"
+              env:
+              - name: SESSION_NAME
+                value: "{{ .Values.env.sessionName }}"
+              - name: SERVER_MAP
+                value: "{{ .Values.env.serverMap }}"
+              - name: SERVER_PASSWORD
+                value: "{{ .Values.env.serverPassword }}"
+              - name: ADMIN_PASSWORD
+                value: "{{ .Values.env.adminPassword }}"
+              - name: MAX_PLAYERS
+                value: "{{ .Values.env.maxPlayers }}"
+              - name: UPDATE_ON_START
+                value: "{{ .Values.env.updateOnStart }}"
+              - name: BACKUP_ON_STOP
+                value: "{{ .Values.env.backupOnStop }}"
+              - name: PRE_UPDATE_BACKUP
+                value: "{{ .Values.env.preUpdateBackup }}"
+              - name: WARN_ON_STOP
+                value: "{{ .Values.env.warnOnStop }}"
+              - name: ENABLE_CROSSPLAY
+                value: "{{ .Values.env.enableCrossplay }}"
+              - name: DISABLE_BATTLEYE
+                value: "{{ .Values.env.disableBattleye }}"
+              - name: ARK_SERVER_VOLUME
+                value: "{{ .Values.env.arkServerVolume }}"
+              - name: GAME_CLIENT_PORT
+                value: "{{ .Values.env.gameClientPort }}"
+              - name: UDP_SOCKET_PORT
+                value: "{{ .Values.env.udpSocketPort }}"
+              - name: RCON_PORT
+                value: "{{ .Values.env.rconPort }}"
+              - name: SERVER_LIST_PORT
+                value: "{{ .Values.env.serverListPort }}"
+              - name: GAME_MOD_IDS
+                value: "{{ .Values.env.gameModIds }}"
+              ports:
+              - name: game-client-port
+                containerPort: {{ .Values.env.gameClientPort | int }}
+                protocol: UDP
+              - name: raw-udp-port
+                containerPort: {{ .Values.env.udpSocketPort | int }}
+                protocol: UDP
+              - name: rcon-port
+                containerPort: {{ .Values.env.rconPort | int }}
+                protocol: TCP
+              - name: server-list-port
+                containerPort: {{ .Values.env.serverListPort | int }}
+                protocol: UDP
+              volumeMounts:
+              - name: ark-server
+                mountPath: /app
+              - name: ark-backups
+                mountPath: /home/steam/ARK-Backups
+            volumes:
+            - name: ark-server
+              persistentVolumeClaim:
+                claimName: "{{ .Chart.Name }}-pvc-server"
+            - name: ark-backups
+              persistentVolumeClaim:
+                claimName: "{{ .Chart.Name }}-pvc-backups"
