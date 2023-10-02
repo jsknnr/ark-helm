@@ -11,42 +11,42 @@ spec:
     type: {{ .Values.serviceType }}
     ports:
     {{- if eq "LoadBalancer" .Values.serviceType }}
-    - name: game-client-port
-      port: {{ .Values.env.gameClientPort | int }}
-      targetPort: game-client-port
+    - name: game-client
+      port: {{ .Values.env.gameClient | int }}
+      targetPort: game-client
       protocol: UDP
-    - name: raw-udp-port
-      port: {{ .Values.env.udpSocketPort | int }}
-      targetPort: raw-udp-port
+    - name: raw-udp
+      port: {{ .Values.env.udpSocket | int }}
+      targetPort: raw-udp
       protocol: UDP
     - name: rcon-port
       port: {{ .Values.env.rconPort | int }}
       targetPort: rcon-port
       protocol: TCP
-    - name: server-list-port
-      port: {{ .Values.env.serverListPort | int }}
-      targetPort: server-list-port
+    - name: server-list
+      port: {{ .Values.env.serverList | int }}
+      targetPort: server-list
       protocol: UDP
     {{- else }}
-    - name: game-client-port
-      port: {{ .Values.env.gameClientPort | int }}
-      targetPort: game-client-port
-      nodePort: {{ .Values.env.gameClientPort | int }}
+    - name: game-client
+      port: {{ .Values.env.gameClient | int }}
+      targetPort: game-client
+      nodePort: {{ .Values.env.gameClient | int }}
       protocol: UDP
-    - name: raw-udp-port
-      port: {{ .Values.env.udpSocketPort | int }}
-      targetPort: raw-udp-port
-      nodePort: {{ .Values.env.udpSocketPort | int }}
+    - name: raw-udp
+      port: {{ .Values.env.udpSocket | int }}
+      targetPort: raw-udp
+      nodePort: {{ .Values.env.udpSocket | int }}
       protocol: UDP
     - name: rcon-port
       port: {{ .Values.env.rconPort | int }}
       targetPort: rcon-port
       nodePort: {{ .Values.env.rconPort | int }}
       protocol: TCP
-    - name: server-list-port
-      port: {{ .Values.env.serverListPort | int }}
-      targetPort: server-list-port
-      nodePort: {{ .Values.env.serverListPort | int }}
+    - name: server-list
+      port: {{ .Values.env.serverList | int }}
+      targetPort: server-list
+      nodePort: {{ .Values.env.serverList | int }}
       protocol: UDP
     {{- end }}
     selector:
