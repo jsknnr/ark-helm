@@ -1,0 +1,32 @@
+image: hermsi/ark-server
+imageTag: latest
+# serviceType should be LoadBalancer or NodePort
+serviceType: LoadBalancer
+resources:
+  requests:
+    memory: 16G
+    cpu: 8.0
+volumes:
+  serverPVC:
+    size: 50Gi
+  backupsPVC:
+    size: 50Gi
+  storageClassName: ""
+env:
+  sessionName: Kubernetes Ark Server
+  serverMap: TheIsland
+  serverPassword: Friend
+  adminPassword: Admin
+  maxPlayers: 20
+  updateOnStart: false
+  backupOnUpdate: false
+  preUpdateBackup: true
+  warnOnStop: true
+  enableCrossplay: true
+  disableBattleye: false
+  arkServerVolume: /app
+  gameClientPort: 7777
+  udpSocketPort: 7778
+  rconPort: 27020
+  serverListPort: 27015
+  gameModIds: ""

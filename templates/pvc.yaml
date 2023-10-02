@@ -1,0 +1,37 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: "{{ .Chart.Name }}-pvc-server"
+    labels:
+        app: "{{ .Chart.Name }}"
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+        heritage: "{{ .Release.Service }}"
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: {{ .Values.volumes.serverPVC.size }}
+    {{- if ne .Values.volumes.storageClassName "" }}
+    storageClassName: {{ .Values.volumes.storageClassName }}
+    {{- end }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+    name: "{{ .Chart.Name }}-pvc-backups"
+    labels:
+        app: "{{ .Chart.Name }}"
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: "{{ .Release.Name }}"
+        heritage: "{{ .Release.Service }}"
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: {{ .Values.volumes.backupsPVC.size }}
+    {{- if ne .Values.volumes.storageClassName "" }}
+    storageClassName: {{ .Values.volumes.storageClassName }}
+    {{- end }}
