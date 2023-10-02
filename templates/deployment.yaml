@@ -63,16 +63,16 @@ spec:
               - name: GAME_MOD_IDS
                 value: "{{ .Values.env.gameModIds }}"
               ports:
-              - name: game-client-port
+              - name: game-client
                 containerPort: {{ .Values.env.gameClient | int }}
                 protocol: UDP
-              - name: raw-udp-port
+              - name: raw-udp
                 containerPort: {{ .Values.env.udpSocket | int }}
                 protocol: UDP
               - name: rcon-port
                 containerPort: {{ .Values.env.rconPort | int }}
                 protocol: TCP
-              - name: server-list-port
+              - name: server-list
                 containerPort: {{ .Values.env.serverList | int }}
                 protocol: UDP
               volumeMounts:
